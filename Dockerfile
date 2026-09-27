@@ -5,9 +5,10 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY bot.py category_intel.py ./
-COPY dataset/ ./dataset/
+COPY . .
 
-EXPOSE 8080
+# Default port, overridable by cloud provider
+ENV PORT=8080
+EXPOSE ${PORT}
 
-CMD ["uvicorn", "bot:app", "--host", "0.0.0.0", "--port", "8080"]
+CMD ["sh", "-c", "uvicorn bot:app --host 0.0.0.0 --port ${PORT}"]
